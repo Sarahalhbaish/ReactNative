@@ -12,8 +12,6 @@ const PostsDetail = ({ route }) => {
   const queryClient = useQueryClient();
 
   const id = route.params;
-  //   const [username, setUsername] = useState("");
-  //   const [comment, setComment] = useState("");
 
   console.log("id", id);
   const { data, isFetching, isSuccess } = useQuery({
@@ -21,17 +19,28 @@ const PostsDetail = ({ route }) => {
     queryFn: () => getPostById(id),
   });
 
-  const mutation = useMutation({
+  const commentMutation = useMutation({
     mutationKey: ["deleteComment"],
     mutationFn: (commentId) => deleteCommentById(commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
-  const handleDelete = (commentId) => {
+  const postMutation = useMutation({
+    mutationKey: ["deletePost"],
+    mutationFn: (id) => deletePostById(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      navigation.goBack();
+    },
+  });
+  const handleCommentDelete = (commentId) => {
     console.log("Deleteing ", commentId);
-    mutation.mutate(commentId);
-    alert("deleted");
+    commentMutation.mutate(commentId);
+  };
+  const handlePostDelete = () => {
+    console.log("Deleteing ", id);
+    postMutation.mutate(id);
   };
   console.log("getPostById", data);
 
@@ -44,7 +53,7 @@ const PostsDetail = ({ route }) => {
           <Text>{comment.comment}</Text>
           <Button
             title="Delete comment"
-            onPress={() => handleDelete(comment.id)}
+            onPress={() => handleCommentDelete(comment.id)}
           />
         </View>
       ))}
@@ -52,8 +61,7 @@ const PostsDetail = ({ route }) => {
         title="Create comment"
         onPress={() => navigation.navigate("AddComment", id)}
       />
-      {/* <Button title="Delete comment" onPress={handleDelete} /> */}
-      <Button title="Delete post" />
+      <Button title="Delete post" onPress={() => handlePostDelete(id)} />
     </View>
   );
 };
