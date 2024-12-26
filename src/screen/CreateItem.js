@@ -1,4 +1,12 @@
-import { StyleSheet, Image, Text, View, Button, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  Text,
+  View,
+  Button,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
@@ -20,19 +28,35 @@ const CreateItem = () => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}></View>
+      <View style={styles.imageContainer}>
+        <TouchableOpacity style={styles.uploadButton}>
+          <Image
+            source={require("../../assets/Questions-pana.png")}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.detailsContainer}>
         <TextInput
-          placeholder="Edit your last name"
-          onChangeText={(newText) => setTitle(newText)}
+          style={styles.input}
+          placeholder="Post title"
+          value={title}
+          onChangeText={setTitle}
         />
         <TextInput
-          placeholder="Edit your last name"
-          onChangeText={(newText) => setDescription(newText)}
+          style={[styles.input, styles.descriptionInput]}
+          placeholder="Post description"
+          value={description}
+          onChangeText={setDescription}
+          multiline
+          numberOfLines={4}
         />
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Create Post</Text>
+        </TouchableOpacity>
       </View>
-      <Button title="Create Post" onPress={handleSubmit} />
     </View>
   );
 };
@@ -48,26 +72,43 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     alignItems: "center",
     justifyContent: "center",
+    padding: 16,
+  },
+  uploadButton: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   image: {
-    width: "80%",
-    height: "80%",
-    resizeMode: "contain",
+    width: "100%",
+    height: "100%",
   },
   detailsContainer: {
+    padding: 16,
+    gap: 16,
+  },
+  input: {
+    backgroundColor: "#f5f5f5",
+    padding: 16,
+    borderRadius: 12,
+    fontSize: 16,
+  },
+  descriptionInput: {
+    height: 120,
+    textAlignVertical: "top",
+  },
+  submitButton: {
+    backgroundColor: "#007AFF",
+    padding: 16,
+    borderRadius: 12,
     alignItems: "center",
-    padding: 20,
+    marginTop: 16,
   },
-  productName: {
-    fontSize: 24,
+  submitButtonText: {
+    color: "#fff",
     fontWeight: "600",
-    color: "#333",
-    marginBottom: 8,
-  },
-  price: {
-    fontSize: 20,
-    fontWeight: "500",
-    color: "#007AFF",
+    fontSize: 16,
   },
 });
 

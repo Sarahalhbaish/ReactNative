@@ -33,7 +33,7 @@ const Home = () => {
     <View style={styles.container}>
       <View style={styles.searchContainer}>
         <TextInput
-          placeholder="Search"
+          placeholder="Search posts..."
           style={styles.searchInput}
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -41,13 +41,30 @@ const Home = () => {
         <Ionicons name="filter-outline" size={24} color="#333" />
       </View>
 
-      <View style={styles.categoriesContainer}>
-        {filteredData?.map((post) => (
-          <TouchableOpacity key={post.id} onPress={() => navigation.navigate("PostsDetail", post.id)}>
-            <Text>{post.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.postsContainer}>
+          {filteredData?.map((post) => (
+            <TouchableOpacity
+              key={post.id}
+              style={styles.postCard}
+              onPress={() => navigation.navigate("PostsDetail", post.id)}
+            >
+              <View style={styles.postContent}>
+                <Text style={styles.postTitle} numberOfLines={2}>
+                  {post.title}
+                </Text>
+                <Text style={styles.postDescription} numberOfLines={3}>
+                  {post.description}
+                </Text>
+                <View style={styles.postFooter}>
+                  <Text style={styles.commentCount}>comments</Text>
+                  <Ionicons name="chevron-forward" size={20} color="#007AFF" />
+                </View>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
 
       <View></View>
     </View>
@@ -57,15 +74,16 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: "#fff",
   },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    padding: 12,
     backgroundColor: "#f5f5f5",
     borderRadius: 12,
+    marginHorizontal: 16,
+    marginTop: 16,
     marginBottom: 16,
   },
   searchInput: {
@@ -73,42 +91,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
     fontSize: 16,
   },
-  categoriesContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-    marginBottom: 16,
+  scrollView: {
+    flex: 1,
   },
-  categoryButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: "#f5f5f5",
-    marginRight: 8,
+  postsContainer: {
+    padding: 16,
+    gap: 16,
   },
-  categoryButtonActive: {
-    backgroundColor: "#333",
-  },
-  categoryText: {
-    fontSize: 14,
-    color: "#333",
-  },
-  categoryTextActive: {
-    color: "#fff",
-  },
-  productsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    paddingBottom: 20,
-  },
-  productCard: {
-    width: "48%",
+  postCard: {
     backgroundColor: "#fff",
     borderRadius: 12,
-    padding: 12,
-    marginBottom: 16,
-    alignItems: "center",
+    padding: 16,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -117,23 +110,53 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    borderWidth: 1,
+    borderColor: "#f0f0f0",
   },
-  productImage: {
-    width: "100%",
-    height: 160,
-    borderRadius: 8,
-    marginBottom: 8,
+  postContent: {
+    gap: 8,
   },
-  productName: {
-    fontSize: 16,
+  postTitle: {
+    fontSize: 18,
     fontWeight: "600",
-    marginBottom: 4,
-    textAlign: "center",
+    color: "#333",
   },
-  productPrice: {
-    fontSize: 16,
+  postDescription: {
+    fontSize: 14,
     color: "#666",
-    fontWeight: "500",
+    lineHeight: 20,
+  },
+  postFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: "#f0f0f0",
+  },
+  commentCount: {
+    fontSize: 14,
+    color: "#666",
+  },
+  fab: {
+    position: "absolute",
+    right: 16,
+    bottom: 16,
+    backgroundColor: "#007AFF",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
 
