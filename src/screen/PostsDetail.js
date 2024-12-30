@@ -43,7 +43,6 @@ const PostsDetail = ({ route }) => {
     console.log("Deleteing ", id);
     postMutation.mutate(id);
   };
-  console.log("getPostById", data);
 
   return (
     <View style={styles.container}>

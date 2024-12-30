@@ -8,7 +8,7 @@ async function getPosts() {
 
 async function getPostById(id) {
   const data = await instance.get(`/posts/${id}`);
-  console.log("data", data);
+  console.log("getPostById", data);
   return data;
 }
 
